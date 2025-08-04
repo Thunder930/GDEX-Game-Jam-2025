@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b08ceb78e3b2495b8d808a5860e66794, type: 3}
+  m_Name: Corruptible_Ground_9
+  m_EditorClassIdentifier: 
+  m_DefaultSprite: {fileID: 21300000, guid: 7f7bcb1366a2d5e4898ef6d676a8021a, type: 3}
+  m_DefaultGameObject: {fileID: 5610049660425519532, guid: 97eed8720ec8ed64bb056313202fd912, type: 3}
+  m_DefaultColliderType: 1
+  m_MaskType: 0
+  m_AutoTileDictionary:
+    keyData: 
+    valueData: []
+  m_TextureList: []
+  m_TextureScaleList: []
