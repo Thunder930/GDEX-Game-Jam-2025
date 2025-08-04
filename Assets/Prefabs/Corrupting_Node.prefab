@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8036958488910159056}
   - component: {fileID: -5875979397798406420}
-  - component: {fileID: 2276098880620077712}
+  - component: {fileID: 3990699701534017971}
   m_Layer: 0
-  m_Name: Corruptible_Ground_9
+  m_Name: Corrupting_Node
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,7 +79,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &2276098880620077712
+--- !u!114 &3990699701534017971
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,8 +88,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5610049660425519532}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68adcea27a1286541af0a27b92b7da34, type: 3}
+  m_Script: {fileID: 11500000, guid: d94b0f5c80073d84b93ed1ddd9463424, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stages: {fileID: 1614429152746679552, guid: 1d8aeedea155aff4c8958fce77afce90, type: 3}
-  currentStage: 9
+  inertNode: {fileID: 11400000, guid: 15b3f6b115f03904e97d8dd54331b4ef, type: 2}
