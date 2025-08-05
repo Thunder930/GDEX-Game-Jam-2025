@@ -1,11 +1,13 @@
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 
 public static class LevelManager
 {
     private static List<int> levels = new List<int>(); // Level's build index = levels[level number - 1]
     private static int currentLevelIndex;
-
+    private static Tilemap _tilemap;
     public static void Init()
     {
         levels.Clear();
@@ -30,5 +32,24 @@ public static class LevelManager
     {
         currentLevelIndex++;
         SceneManager.LoadScene(levels[currentLevelIndex]);
+    }
+
+    public static void SetTileMap(Tilemap tilemap)
+    {
+        _tilemap = tilemap;
+    }
+
+    public static void ReplaceTile(Vector3Int location, TileBase tile)
+    {
+        int purificationPower = 0;
+        if (_tilemap.GetInstantiatedObject(location).TryGetComponent<IPurifyingPasser>(out IPurifyingPasser purifyingPasser))
+        {
+            purificationPower = purifyingPasser.purificationPower;
+        }
+        _tilemap.SetTile(location, tile);
+        if (_tilemap.GetInstantiatedObject(location).TryGetComponent<IPurifyingPasser>(out IPurifyingPasser purifyingPasserOut))
+        {
+            purifyingPasserOut.purificationPower = purificationPower;
+        }
     }
 }

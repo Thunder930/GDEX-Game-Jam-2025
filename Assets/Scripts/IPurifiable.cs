@@ -1,4 +1,4 @@
 public interface IPurifiable
 {
-    public void AddPurificationPower(int purificationPower);
+    public void SetPurificationPower(int purificationPower);
 }

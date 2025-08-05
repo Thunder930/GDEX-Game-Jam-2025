@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -9,7 +10,11 @@ public class CorruptingNode : MonoBehaviour, IPurifiable
     private List<Vector3Int> adjacentTileLocations = new List<Vector3Int>();
     private Vector3Int location;
     private Tilemap tilemap;
-    private int purificationPower = 0;
+    private bool purificationStarted;
+    private float timeSincePurificationStart = 0.0f;
+    private const float TIME_TO_PASS_ALONG_PURIFICATION = 1.0f;
+
+    public int purificationPower { get; set; }
 
     private void Start()
     {
@@ -25,6 +30,10 @@ public class CorruptingNode : MonoBehaviour, IPurifiable
 
     private void Update()
     {
+        if (purificationStarted)
+        {
+            timeSincePurificationStart = Mathf.Min(timeSincePurificationStart + Time.deltaTime, TIME_TO_PASS_ALONG_PURIFICATION); // prevent overflow
+        }
         foreach (Vector3Int tilePos in adjacentTileLocations)
         {
             GameObject tile = tilemap.GetInstantiatedObject(tilePos);
@@ -34,13 +43,13 @@ public class CorruptingNode : MonoBehaviour, IPurifiable
                 {
                     corruptible.AddCorruptionSpeed(corruptionPower);
                 }
-                if (tile.TryGetComponent<IPurifiable>(out IPurifiable purifiable))
+                if (timeSincePurificationStart >= TIME_TO_PASS_ALONG_PURIFICATION && tile.TryGetComponent<IPurifiable>(out IPurifiable purifiable))
                 {
-                    purifiable.AddPurificationPower(purificationPower - 1);
+                    purifiable.SetPurificationPower(purificationPower - 1);
                 }
             }
         }
-        if (purificationPower > 0)
+        if (purificationPower > 0 && timeSincePurificationStart >= TIME_TO_PASS_ALONG_PURIFICATION)
         {
             foreach (Vector3Int tilePos in adjacentTileLocations)
             {
@@ -60,11 +69,17 @@ public class CorruptingNode : MonoBehaviour, IPurifiable
         }
     }
 
-    public void AddPurificationPower(int purificationPower)
+    public void SetPurificationPower(int purificationPower)
     {
+        this.purificationPower = Math.Max(this.purificationPower, purificationPower);
         if (purificationPower > 0)
         {
-            this.purificationPower = purificationPower;
+            purificationStarted = true;
+        }
+        else
+        {
+            purificationStarted = false;
+            timeSincePurificationStart = 0.0f;
         }
     }
 }

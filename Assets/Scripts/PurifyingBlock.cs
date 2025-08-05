@@ -4,10 +4,13 @@ using UnityEngine.Tilemaps;
 
 public class PurifyingBlock : MonoBehaviour
 {
-    [SerializeField] int purificationPower;
+    public int purificationPower;
     private Vector3Int location;
     private Tilemap tilemap;
     private List<Vector3Int> adjacentTileLocations = new List<Vector3Int>();
+    private float timeSincePlaced = 0.0f;
+    private const float TIME_TO_PASS_ALONG_PURIFICATION = 1.0f;
+
     private void Start()
     {
         tilemap = GetComponentInParent<Tilemap>();
@@ -22,14 +25,18 @@ public class PurifyingBlock : MonoBehaviour
 
     private void Update()
     {
-        foreach (Vector3Int tilePos in adjacentTileLocations)
+        timeSincePlaced = Mathf.Min(timeSincePlaced + Time.deltaTime, TIME_TO_PASS_ALONG_PURIFICATION); // prevent overflow
+        if (timeSincePlaced >= TIME_TO_PASS_ALONG_PURIFICATION)
         {
-            GameObject tile = tilemap.GetInstantiatedObject(tilePos);
-            if (tile != null)
+            foreach (Vector3Int tilePos in adjacentTileLocations)
             {
-                if (tile.TryGetComponent<IPurifiable>(out IPurifiable purifiable))
+                GameObject tile = tilemap.GetInstantiatedObject(tilePos);
+                if (tile != null)
                 {
-                    purifiable.AddPurificationPower(purificationPower);
+                    if (tile.TryGetComponent<IPurifiable>(out IPurifiable purifiable))
+                    {
+                        purifiable.SetPurificationPower(purificationPower);
+                    }
                 }
             }
         }

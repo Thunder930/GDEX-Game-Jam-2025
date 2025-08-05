@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -6,7 +7,6 @@ public class Corruptible_Tile : MonoBehaviour, ICorruptible, IPurifiable
 {
     [SerializeField] CorruptingStages stages;
     [SerializeField] int corruptionPower;
-    private int purificationPower = 0;
 
     public int currentStage;
     private float timeSinceLastCorruption;
@@ -15,7 +15,12 @@ public class Corruptible_Tile : MonoBehaviour, ICorruptible, IPurifiable
     private List<Vector3Int> adjacentTileLocations = new List<Vector3Int>();
     private const float TIME_TO_ADVANCE_CORRUPTION = 0.1f;
     public bool IsCorrupted { get; private set; } = false;
+    public int purificationPower { get; set; }
+
     private int corruptionSpeed = 0;
+    private bool purificationStarted;
+    private float timeSincePurificationStart = 0.0f;
+    private const float TIME_TO_PASS_ALONG_PURIFICATION = 1.0f;
 
     private void Start()
     {
@@ -35,7 +40,10 @@ public class Corruptible_Tile : MonoBehaviour, ICorruptible, IPurifiable
 
     private void Update()
     {
-
+        if (purificationStarted)
+        {
+            timeSincePurificationStart = Mathf.Min(timeSincePurificationStart + Time.deltaTime, TIME_TO_PASS_ALONG_PURIFICATION); // prevent overflow
+        }
         timeSinceLastCorruption = Mathf.Min(timeSinceLastCorruption + Time.deltaTime, TIME_TO_ADVANCE_CORRUPTION); // prevent overflow
 
         foreach (Vector3Int tilePos in adjacentTileLocations)
@@ -47,9 +55,9 @@ public class Corruptible_Tile : MonoBehaviour, ICorruptible, IPurifiable
                 {
                     corruptible.AddCorruptionSpeed(corruptionPower);
                 }
-                if (tile.TryGetComponent<IPurifiable>(out IPurifiable purifiable))
+                if (timeSincePurificationStart >= TIME_TO_PASS_ALONG_PURIFICATION && tile.TryGetComponent<IPurifiable>(out IPurifiable purifiable))
                 {
-                    purifiable.AddPurificationPower(purificationPower - 1);
+                    purifiable.SetPurificationPower(purificationPower - 1);
                 }
             }
         }
@@ -59,9 +67,9 @@ public class Corruptible_Tile : MonoBehaviour, ICorruptible, IPurifiable
             timeSinceLastCorruption = 0.0f;
             if ((corruptionSpeed - purificationPower) > 0 && currentStage < stages.stages.Length - 1)
             {
-                tilemap.SetTile(location, stages.stages[currentStage + 1]);
+                LevelManager.ReplaceTile(location, stages.stages[currentStage + 1]);
             }
-            else if ((corruptionSpeed - purificationPower) < 0 && currentStage > 0)
+            else if ((corruptionSpeed - purificationPower) <= 0 && currentStage > 0)
             {
                 tilemap.SetTile(location, stages.stages[currentStage - 1]);
             }
@@ -77,11 +85,16 @@ public class Corruptible_Tile : MonoBehaviour, ICorruptible, IPurifiable
         }
     }
 
-    public void AddPurificationPower(int purificationPower)
+    public void SetPurificationPower(int purificationPower)
     {
+        this.purificationPower = Math.Max(this.purificationPower, purificationPower);
         if (purificationPower > 0)
         {
-            this.purificationPower = purificationPower;
+            purificationStarted = true;
+        } else
+        {
+            purificationStarted = false;
+            timeSincePurificationStart = 0.0f;
         }
     }
 }
