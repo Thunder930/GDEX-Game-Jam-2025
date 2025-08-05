@@ -10,8 +10,8 @@ public class CorruptingNode : MonoBehaviour, IPurifiable
     private List<Vector3Int> adjacentTileLocations = new List<Vector3Int>();
     private Vector3Int location;
     private Tilemap tilemap;
-    private bool purificationStarted;
-    private float timeSincePurificationStart = 0.0f;
+    public bool purificationStarted { get; set; }
+    public float timeSincePurificationStart { get; set; }
     private const float TIME_TO_PASS_ALONG_PURIFICATION = 1.0f;
 
     public int purificationPower { get; set; }

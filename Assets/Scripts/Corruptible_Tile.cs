@@ -18,8 +18,8 @@ public class Corruptible_Tile : MonoBehaviour, ICorruptible, IPurifiable
     public int purificationPower { get; set; }
 
     private int corruptionSpeed = 0;
-    private bool purificationStarted;
-    private float timeSincePurificationStart = 0.0f;
+    public bool purificationStarted { get; set; }
+    public float timeSincePurificationStart { get; set; }
     private const float TIME_TO_PASS_ALONG_PURIFICATION = 1.0f;
 
     private void Start()
@@ -67,11 +67,11 @@ public class Corruptible_Tile : MonoBehaviour, ICorruptible, IPurifiable
             timeSinceLastCorruption = 0.0f;
             if ((corruptionSpeed - purificationPower) > 0 && currentStage < stages.stages.Length - 1)
             {
-                LevelManager.ReplaceTile(location, stages.stages[currentStage + 1]);
+                LevelManager.ReplaceTileAndTransferProperties(location, stages.stages[currentStage + 1]);
             }
             else if ((corruptionSpeed - purificationPower) <= 0 && currentStage > 0)
             {
-                tilemap.SetTile(location, stages.stages[currentStage - 1]);
+                LevelManager.ReplaceTileAndTransferProperties(location, stages.stages[currentStage - 1]);
             }
         }
         corruptionSpeed = 0;

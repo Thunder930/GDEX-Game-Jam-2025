@@ -39,17 +39,23 @@ public static class LevelManager
         _tilemap = tilemap;
     }
 
-    public static void ReplaceTile(Vector3Int location, TileBase tile)
+    public static void ReplaceTileAndTransferProperties(Vector3Int location, TileBase tile)
     {
         int purificationPower = 0;
-        if (_tilemap.GetInstantiatedObject(location).TryGetComponent<IPurifyingPasser>(out IPurifyingPasser purifyingPasser))
+        float timeSincePurificationStart = 0.0f;
+        bool purificationStarted = false;
+        if (_tilemap.GetInstantiatedObject(location).TryGetComponent<IPurifiable>(out IPurifiable purifiable))
         {
-            purificationPower = purifyingPasser.purificationPower;
+            purificationPower = purifiable.purificationPower;
+            timeSincePurificationStart = purifiable.timeSincePurificationStart;
+            purificationStarted = purifiable.purificationStarted;
         }
         _tilemap.SetTile(location, tile);
-        if (_tilemap.GetInstantiatedObject(location).TryGetComponent<IPurifyingPasser>(out IPurifyingPasser purifyingPasserOut))
+        if (_tilemap.GetInstantiatedObject(location).TryGetComponent<IPurifiable>(out IPurifiable purifiableOut))
         {
-            purifyingPasserOut.purificationPower = purificationPower;
+            purifiableOut.purificationPower = purificationPower;
+            purifiableOut.timeSincePurificationStart = timeSincePurificationStart;
+            purifiableOut.purificationStarted = purificationStarted;
         }
     }
 }
