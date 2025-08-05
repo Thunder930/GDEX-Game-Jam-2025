@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8036958488910159056}
   - component: {fileID: -5875979397798406420}
   m_Layer: 0
-  m_Name: Inert_Node
+  m_Name: Propertyless_Block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
