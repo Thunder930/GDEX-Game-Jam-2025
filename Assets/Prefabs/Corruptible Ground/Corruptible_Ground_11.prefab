@@ -92,4 +92,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stages: {fileID: 1614429152746679552, guid: 1d8aeedea155aff4c8958fce77afce90, type: 3}
+  corruptionPower: 1
   currentStage: 11

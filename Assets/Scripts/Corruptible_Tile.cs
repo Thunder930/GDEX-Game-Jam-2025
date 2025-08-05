@@ -5,6 +5,9 @@ using UnityEngine.Tilemaps;
 public class Corruptible_Tile : MonoBehaviour, ICorruptible, IPurifiable
 {
     [SerializeField] CorruptingStages stages;
+    [SerializeField] int corruptionPower;
+    private int purificationPower = 0;
+
     public int currentStage;
     private float timeSinceLastCorruption;
     private Vector3Int location;
@@ -12,6 +15,7 @@ public class Corruptible_Tile : MonoBehaviour, ICorruptible, IPurifiable
     private List<Vector3Int> adjacentTileLocations = new List<Vector3Int>();
     private const float TIME_TO_ADVANCE_CORRUPTION = 0.1f;
     public bool IsCorrupted { get; private set; } = false;
+    private int corruptionSpeed = 0;
 
     private void Start()
     {
@@ -31,34 +35,53 @@ public class Corruptible_Tile : MonoBehaviour, ICorruptible, IPurifiable
 
     private void Update()
     {
+
         timeSinceLastCorruption = Mathf.Min(timeSinceLastCorruption + Time.deltaTime, TIME_TO_ADVANCE_CORRUPTION); // prevent overflow
-        if (IsCorrupted)
+
+        foreach (Vector3Int tilePos in adjacentTileLocations)
         {
-            foreach (Vector3Int tilePos in adjacentTileLocations)
+            GameObject tile = tilemap.GetInstantiatedObject(tilePos);
+            if (tile != null)
             {
-                GameObject tile = tilemap.GetInstantiatedObject(tilePos);
-                if (tile != null)
+                if (tile.TryGetComponent<ICorruptible>(out ICorruptible corruptible))
                 {
-                    if (tile.TryGetComponent<ICorruptible>(out ICorruptible corruptible))
-                    {
-                        corruptible.Corrupt();
-                    }
+                    corruptible.AddCorruptionSpeed(corruptionPower);
+                }
+                if (tile.TryGetComponent<IPurifiable>(out IPurifiable purifiable))
+                {
+                    purifiable.AddPurificationPower(purificationPower - 1);
                 }
             }
         }
+
+        if (timeSinceLastCorruption >= TIME_TO_ADVANCE_CORRUPTION)
+        {
+            timeSinceLastCorruption = 0.0f;
+            if ((corruptionSpeed - purificationPower) > 0 && currentStage < stages.stages.Length - 1)
+            {
+                tilemap.SetTile(location, stages.stages[currentStage + 1]);
+            }
+            else if ((corruptionSpeed - purificationPower) < 0 && currentStage > 0)
+            {
+                tilemap.SetTile(location, stages.stages[currentStage - 1]);
+            }
+        }
+        corruptionSpeed = 0;
     }
 
-    public void Corrupt()
+    public void AddCorruptionSpeed(int corruptionSpeed)
     {
-        if (!IsCorrupted && timeSinceLastCorruption >= TIME_TO_ADVANCE_CORRUPTION)
+        if (corruptionSpeed > 0)
         {
-            tilemap.SetTile(location, stages.stages[currentStage + 1]);
+            this.corruptionSpeed += corruptionSpeed;
         }
     }
 
-    public void Purify()
+    public void AddPurificationPower(int purificationPower)
     {
-        tilemap.SetTile(location, stages.stages[0]);
-        IsCorrupted = false;
+        if (purificationPower > 0)
+        {
+            this.purificationPower = purificationPower;
+        }
     }
 }

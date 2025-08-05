@@ -92,3 +92,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inertNode: {fileID: 11400000, guid: 15b3f6b115f03904e97d8dd54331b4ef, type: 2}
+  corruptionPower: 1

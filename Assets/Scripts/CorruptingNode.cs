@@ -5,9 +5,11 @@ using UnityEngine.Tilemaps;
 public class CorruptingNode : MonoBehaviour, IPurifiable
 {
     [SerializeField] TileBase inertNode;
+    [SerializeField] int corruptionPower;
     private List<Vector3Int> adjacentTileLocations = new List<Vector3Int>();
     private Vector3Int location;
     private Tilemap tilemap;
+    private int purificationPower = 0;
 
     private void Start()
     {
@@ -30,28 +32,39 @@ public class CorruptingNode : MonoBehaviour, IPurifiable
             {
                 if (tile.TryGetComponent<ICorruptible>(out ICorruptible corruptible))
                 {
-                    corruptible.Corrupt();
+                    corruptible.AddCorruptionSpeed(corruptionPower);
+                }
+                if (tile.TryGetComponent<IPurifiable>(out IPurifiable purifiable))
+                {
+                    purifiable.AddPurificationPower(purificationPower - 1);
                 }
             }
         }
-    }
-
-    public void Purify()
-    {
-        foreach (Vector3Int tilePos in adjacentTileLocations)
+        if (purificationPower > 0)
         {
-            GameObject tile = tilemap.GetInstantiatedObject(tilePos);
-            if (tile != null)
+            foreach (Vector3Int tilePos in adjacentTileLocations)
             {
-                if (tile.TryGetComponent<ICorruptible>(out ICorruptible corruptible))
+                GameObject tile = tilemap.GetInstantiatedObject(tilePos);
+                if (tile != null)
                 {
-                    if (corruptible.IsCorrupted)
+                    if (tile.TryGetComponent<ICorruptible>(out ICorruptible corruptible))
                     {
-                        return;
+                        if (corruptible.IsCorrupted)
+                        {
+                            return;
+                        }
                     }
                 }
             }
+            tilemap.SetTile(location, inertNode);
         }
-        tilemap.SetTile(location, inertNode);
+    }
+
+    public void AddPurificationPower(int purificationPower)
+    {
+        if (purificationPower > 0)
+        {
+            this.purificationPower = purificationPower;
+        }
     }
 }

@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8036958488910159056}
   - component: {fileID: -5875979397798406420}
-  - component: {fileID: 2276098880620077712}
+  - component: {fileID: 508394494394006154}
   m_Layer: 0
-  m_Name: Corruptible_Ground_0
+  m_Name: Purifying_Block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,7 +79,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &2276098880620077712
+--- !u!114 &508394494394006154
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,9 +88,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5610049660425519532}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68adcea27a1286541af0a27b92b7da34, type: 3}
+  m_Script: {fileID: 11500000, guid: 35fa1cbdb10c6d74e80804118230fd0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stages: {fileID: 1614429152746679552, guid: 1d8aeedea155aff4c8958fce77afce90, type: 3}
-  corruptionPower: 0
-  currentStage: 0
+  purificationPower: 2
