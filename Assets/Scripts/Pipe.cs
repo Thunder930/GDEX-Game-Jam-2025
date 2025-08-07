@@ -12,8 +12,6 @@ public class Pipe : MonoBehaviour, ICorruptible, IPurifiable
     private List<Vector3Int> openings = new List<Vector3Int>();
     private Tilemap tilemap;
     private Vector3Int location;
-    private int corruptionPower;
-    public bool IsCorrupted => IsOpeningCorrupted();
     public float timeSincePurificationStart { get; set; }
     public bool purificationStarted { get; set; }
     public int purificationPower { get; set; }
@@ -37,7 +35,7 @@ public class Pipe : MonoBehaviour, ICorruptible, IPurifiable
             {
                 if (tile.TryGetComponent<ICorruptible>(out ICorruptible corruptible))
                 {
-                    corruptible.AddCorruptionSpeed(corruptionPower, location);
+                    corruptible.AddCorruptionSpeed(GetCorruptionPower(location), location);
                 }
                 if (tile.TryGetComponent<IPurifiable>(out IPurifiable purifiable))
                 {
@@ -49,16 +47,7 @@ public class Pipe : MonoBehaviour, ICorruptible, IPurifiable
 
     public void AddCorruptionSpeed(int corruptionSpeed, Vector3Int from)
     {
-        if (openings.Contains(from) && corruptionSpeed > 0)
-        {
-            foreach (Vector3Int opening in openings)
-            {
-                if (opening != from)
-                {
-
-                }
-            }
-        }
+        // Pipes's corruption is based on the corruption of blocks at the openings. Thus, this does nothing.
     }
 
     public void SetPurificationPower(int purificationPower, Vector3Int from)
@@ -69,14 +58,34 @@ public class Pipe : MonoBehaviour, ICorruptible, IPurifiable
         }
     }
 
-    private bool IsOpeningCorrupted()
+    public int GetCorruptionPower(Vector3Int from)
+    {
+        int corruptionPower = 0;
+        foreach (Vector3Int opening in openings)
+        {
+            if (opening != from)
+            {
+                GameObject tile = tilemap.GetInstantiatedObject(opening);
+                if (tile != null && tile.TryGetComponent<ICorruptible>(out ICorruptible corruptible) && corruptible.IsCorrupted(location))
+                {
+                    corruptionPower = Math.Max(corruptionPower, corruptible.GetCorruptionPower(location));
+                }
+            }
+        }
+        return corruptionPower;
+    }
+
+    public bool IsCorrupted(Vector3Int from)
     {
         foreach (Vector3Int opening in openings)
         {
-            GameObject tile = tilemap.GetInstantiatedObject(opening);
-            if (tile != null && tile.TryGetComponent<ICorruptible>(out ICorruptible corruptible) && corruptible.IsCorrupted)
+            if (opening != from)
             {
-                return true;
+                GameObject tile = tilemap.GetInstantiatedObject(opening);
+                if (tile != null && tile.TryGetComponent<ICorruptible>(out ICorruptible corruptible) && corruptible.IsCorrupted(location))
+                {
+                    return true;
+                }
             }
         }
         return false;

@@ -92,4 +92,14 @@ public class Corruptible_Tile : MonoBehaviour, ICorruptible, IPurifiable
             timeSincePurificationStart = 0.0f;
         }
     }
+
+    public int GetCorruptionPower(Vector3Int from)
+    {
+        return corruptionPower;
+    }
+
+    bool ICorruptible.IsCorrupted(Vector3Int from)
+    {
+        return IsCorrupted;
+    }
 }
