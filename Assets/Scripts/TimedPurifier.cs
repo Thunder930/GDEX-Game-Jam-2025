@@ -19,12 +19,7 @@ public class TimedPurifier : MonoBehaviour
     {
         tilemap = GetComponentInParent<Tilemap>();
         location = tilemap.WorldToCell(transform.position);
-        adjacentTileLocations.Add(location + new Vector3Int(-1, 0, 0));
-        adjacentTileLocations.Add(location + new Vector3Int(1, 0, 0));
-        adjacentTileLocations.Add(location + new Vector3Int(0, -1, 0));
-        adjacentTileLocations.Add(location + new Vector3Int(0, 1, 0));
-        adjacentTileLocations.Add(location + new Vector3Int(0, 0, -1));
-        adjacentTileLocations.Add(location + new Vector3Int(0, 0, 1));
+        adjacentTileLocations.AddRange(LevelManager.GetAdjacentTileLocations(location));
     }
 
     private void Update()
@@ -40,7 +35,7 @@ public class TimedPurifier : MonoBehaviour
                 {
                     if (tile.TryGetComponent<IPurifiable>(out IPurifiable purifiable))
                     {
-                        purifiable.SetPurificationPower(purificationPower);
+                        purifiable.SetPurificationPower(purificationPower, location);
                     }
                 }
             }

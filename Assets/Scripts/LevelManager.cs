@@ -58,4 +58,16 @@ public static class LevelManager
             purifiableOut.purificationStarted = purificationStarted;
         }
     }
+
+    public static List<Vector3Int> GetAdjacentTileLocations(Vector3Int location)
+    {
+        List<Vector3Int> adjacentTiles = new List<Vector3Int>()
+        {
+            location + new Vector3Int(-1, 0),
+            location + new Vector3Int(1, 0),
+            location + new Vector3Int(0, -1),
+            location + new Vector3Int(0, 1)
+        };
+        return adjacentTiles;
+    }
 }
