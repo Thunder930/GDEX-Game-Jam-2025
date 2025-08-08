@@ -29,8 +29,14 @@ public class InputManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
+    public void ReloadLevel()
+    {
+        LevelManager.ReloadLevel();
+    }
+
     private void OnDestroy()
     {
+        menuController.OnDestroy();
         input.Disable();
         input.Dispose();
     }

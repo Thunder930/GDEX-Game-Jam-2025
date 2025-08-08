@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,7 +8,6 @@ public static class LevelManager
     private static List<int> levels = new List<int>(); // Level's build index = levels[level number - 1]
     private static int currentLevelIndex;
     private static Tilemap _tilemap;
-    private static GAME_STATE _state;
     private static List<Vector3Int> _corruptedTiles;
     public static void Init()
     {
@@ -23,18 +21,26 @@ public static class LevelManager
                 levels.Add(i);
             }
         }
-        _state = GAME_STATE.RUNNING;
+        GameState.ChangeState(GAME_STATE.RUNNING);
     }
 
     public static void LoadLevel(int level)
     {
         currentLevelIndex = level - 1; // Account for 0 indexing
+        GameState.ChangeState(GAME_STATE.RUNNING);
         SceneManager.LoadScene(levels[currentLevelIndex]);
     }
 
     public static void LoadNextLevel()
     {
         currentLevelIndex++;
+        GameState.ChangeState(GAME_STATE.RUNNING);
+        SceneManager.LoadScene(levels[currentLevelIndex]);
+    }
+
+    public static void ReloadLevel()
+    {
+        GameState.ChangeState(GAME_STATE.RUNNING);
         SceneManager.LoadScene(levels[currentLevelIndex]);
     }
 

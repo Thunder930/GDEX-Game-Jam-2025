@@ -19,7 +19,6 @@ public class SceneLoader : MonoBehaviour
         {
             string[] resolution = setting.text.Split('x');
             resolutionList.Add(new Tuple<int, int>(Int32.Parse(resolution[0]), Int32.Parse(resolution[1])));
-            Debug.Log("Found resolution " + resolution[0] + "x" + resolution[1]);
         }
         LevelManager.Init();
     }
@@ -44,7 +43,6 @@ public class SceneLoader : MonoBehaviour
     private void RefreshScreenSettings()
     {
         Screen.SetResolution(resolutionList[resolutionIndex].Item1, resolutionList[resolutionIndex].Item2, fullScreen);
-        Debug.Log("Resolution changed to " + Screen.width + "x" + Screen.height);
     }
 
     public void LoadScene(string sceneName)

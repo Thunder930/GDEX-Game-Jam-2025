@@ -20,7 +20,6 @@ public class MenuController
 
     public void ToggleMenu()
     {
-        if (PauseMenu == null) return;
         if (GameState._state == GAME_STATE.PAUSED)
         {
             GameState.ChangeState(GAME_STATE.RUNNING);
@@ -31,7 +30,7 @@ public class MenuController
         }
     }
 
-    private void OnDestroy()
+    public void OnDestroy()
     {
         openCloseAction.performed -= ToggleMenu;
     }
