@@ -53,7 +53,7 @@ public class CorruptingNode : MonoBehaviour, IPurifiable
                 {
                     if (tile.TryGetComponent<ICorruptible>(out ICorruptible corruptible))
                     {
-                        if (corruptible.IsCorrupted(location))
+                        if (corruptible.IsCorrupted())
                         {
                             return;
                         }

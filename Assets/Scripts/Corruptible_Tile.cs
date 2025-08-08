@@ -98,7 +98,7 @@ public class Corruptible_Tile : MonoBehaviour, ICorruptible, IPurifiable
         return corruptionPower;
     }
 
-    bool ICorruptible.IsCorrupted(Vector3Int from)
+    bool ICorruptible.IsCorrupted()
     {
         return IsCorrupted;
     }
