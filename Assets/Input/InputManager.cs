@@ -29,6 +29,11 @@ public class InputManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
+    public void LoadNextLevel()
+    {
+        LevelManager.LoadNextLevel();
+    }
+
     public void ReloadLevel()
     {
         LevelManager.ReloadLevel();

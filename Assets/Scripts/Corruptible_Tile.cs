@@ -14,7 +14,7 @@ public class Corruptible_Tile : MonoBehaviour, ICorruptible, IPurifiable
     private Tilemap tilemap;
     private List<Vector3Int> adjacentTileLocations = new List<Vector3Int>();
     private const float TIME_TO_ADVANCE_CORRUPTION = 0.1f;
-    public bool IsCorrupted { get; private set; } = false;
+
     public int purificationPower { get; set; }
 
     private int corruptionSpeed = 0;
@@ -24,10 +24,6 @@ public class Corruptible_Tile : MonoBehaviour, ICorruptible, IPurifiable
 
     private void Start()
     {
-        if (currentStage == stages.stages.Length - 1)
-        {
-            IsCorrupted = true;
-        }
         tilemap = GetComponentInParent<Tilemap>();
         location = tilemap.WorldToCell(transform.position);
         adjacentTileLocations.AddRange(LevelManager.GetAdjacentTileLocations(location));
@@ -98,8 +94,13 @@ public class Corruptible_Tile : MonoBehaviour, ICorruptible, IPurifiable
         return corruptionPower;
     }
 
-    bool ICorruptible.IsCorrupted()
+    public bool IsCorrupted()
     {
-        return IsCorrupted;
+        return currentStage > 0;
+    }
+
+    public bool IsFullyCorrupted()
+    {
+        return currentStage == stages.stages.Length - 1;
     }
 }

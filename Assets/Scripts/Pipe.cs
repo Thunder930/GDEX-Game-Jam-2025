@@ -66,7 +66,7 @@ public class Pipe : MonoBehaviour, ICorruptible, IPurifiable
             if (opening != from)
             {
                 GameObject tile = tilemap.GetInstantiatedObject(opening);
-                if (tile != null && tile.TryGetComponent<ICorruptible>(out ICorruptible corruptible) && corruptible.IsCorrupted())
+                if (tile != null && tile.TryGetComponent<ICorruptible>(out ICorruptible corruptible))
                 {
                     corruptionPower = Math.Max(corruptionPower, corruptible.GetCorruptionPower(location));
                 }
@@ -81,6 +81,19 @@ public class Pipe : MonoBehaviour, ICorruptible, IPurifiable
         {
             GameObject tile = tilemap.GetInstantiatedObject(opening);
             if (tile != null && tile.TryGetComponent<ICorruptible>(out ICorruptible corruptible) && corruptible.IsCorrupted())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool IsFullyCorrupted()
+    {
+        foreach (Vector3Int opening in openings)
+        {
+            GameObject tile = tilemap.GetInstantiatedObject(opening);
+            if (tile != null && tile.TryGetComponent<ICorruptible>(out ICorruptible corruptible) && corruptible.IsFullyCorrupted())
             {
                 return true;
             }

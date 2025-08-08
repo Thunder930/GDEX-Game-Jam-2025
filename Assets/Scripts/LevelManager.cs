@@ -122,4 +122,9 @@ public static class LevelManager
         };
         return adjacentTiles;
     }
+
+    public static bool IsFinalLevel()
+    {
+        return currentLevelIndex >= levels.Count - 1;
+    }
 }
