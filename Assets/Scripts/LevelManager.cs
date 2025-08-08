@@ -4,20 +4,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
-public enum GAME_STATE
-{
-    RUNNING, 
-    WON,
-    LOST
-};
-
 public static class LevelManager
 {
     private static List<int> levels = new List<int>(); // Level's build index = levels[level number - 1]
     private static int currentLevelIndex;
     private static Tilemap _tilemap;
     private static GAME_STATE _state;
-    public static event Action<GAME_STATE> OnGameStateChange;
     private static List<Vector3Int> _corruptedTiles;
     public static void Init()
     {
@@ -85,10 +77,10 @@ public static class LevelManager
         }
         if (allBlocksCorrupted)
         {
-            ChangeState(GAME_STATE.LOST);
+            GameState.ChangeState(GAME_STATE.LOST);
         } else if (allBlocksPurified)
         {
-            ChangeState(GAME_STATE.WON);
+            GameState.ChangeState(GAME_STATE.WON);
         }
         // else keep the state as running
     }
@@ -123,14 +115,5 @@ public static class LevelManager
             location + new Vector3Int(0, 1)
         };
         return adjacentTiles;
-    }
-
-    private static void ChangeState(GAME_STATE state)
-    {
-        if (state != _state)
-        {
-            _state = state;
-            OnGameStateChange?.Invoke(state);
-        }
     }
 }

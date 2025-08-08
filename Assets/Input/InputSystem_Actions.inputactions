@@ -34,19 +34,19 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "PlaceBlock",
-                    "type": "Button",
-                    "id": "40e1a878-6b02-4218-8fdc-f416727e3a07",
-                    "expectedControlType": "",
+                    "name": "SwtichBlock",
+                    "type": "PassThrough",
+                    "id": "a7cfd952-ca29-4a23-9ec5-718ebdf7a524",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SwtichBlock",
-                    "type": "PassThrough",
-                    "id": "a7cfd952-ca29-4a23-9ec5-718ebdf7a524",
-                    "expectedControlType": "Vector2",
+                    "name": "PlaceBlock",
+                    "type": "Button",
+                    "id": "34f20be2-c0f8-4f4b-b0c5-be986fa0fd71",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -154,23 +154,23 @@
                 },
                 {
                     "name": "",
-                    "id": "9e162cb5-a0e2-4106-94fe-568bed7a49bb",
-                    "path": "<Keyboard>/tab",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "PlaceBlock",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "e4792a4c-e439-4e58-8c6d-5fee9c354b04",
                     "path": "<Mouse>/scroll",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "SwtichBlock",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1c36ae08-c746-4d4c-a160-cb9ac0539b98",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PlaceBlock",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -224,6 +224,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "badca851-4017-4283-9e9a-b6bd1d51b7b4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -587,6 +596,17 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "985c3cd1-1c92-446d-9a81-b8001a42cde4",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

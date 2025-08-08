@@ -8,8 +8,13 @@ public class PlayerBlockPlacerController
     private PlaceableBlockList blockList;
     private int selectedBlockIndex;
     private Image blockImage;
+    private InputAction placeBlockAction;
+    private InputAction switchBlockAction;
+
     public PlayerBlockPlacerController(InputAction placeBlockAction, InputAction switchBlockAction, BlockPlacer blockPlacer, PlaceableBlockList blockList, Image blockImage)
     {
+        this.placeBlockAction = placeBlockAction;
+        this.switchBlockAction = switchBlockAction;
         this.blockPlacer = blockPlacer;
         placeBlockAction.performed += PlaceBlock;
         placeBlockAction.Enable();
@@ -23,27 +28,41 @@ public class PlayerBlockPlacerController
 
     private void PlaceBlock(InputAction.CallbackContext context)
     {
-        blockPlacer.PlaceBlock();
-        blockPlacer.IncrementCounter(selectedBlockIndex);
+        if (GameState._state == GAME_STATE.RUNNING)
+        {
+            blockPlacer.PlaceBlock();
+            blockPlacer.IncrementCounter(selectedBlockIndex);
+        }
     }
 
     private void SwitchBlock(InputAction.CallbackContext context)
     {
-        float input = context.ReadValue<Vector2>().y;
-        if (input > 0.0f)
+        if (GameState._state == GAME_STATE.RUNNING)
         {
-            selectedBlockIndex = (selectedBlockIndex + 1) % blockList.placeableBlocks.Length;
-        } else if (input < 0.0f)
-        {
-            if (selectedBlockIndex == 0)
+            float input = context.ReadValue<Vector2>().y;
+            if (input > 0.0f)
             {
-                selectedBlockIndex = blockList.placeableBlocks.Length - 1;
-            } else
-            {
-                selectedBlockIndex--;
+                selectedBlockIndex = (selectedBlockIndex + 1) % blockList.placeableBlocks.Length;
             }
+            else if (input < 0.0f)
+            {
+                if (selectedBlockIndex == 0)
+                {
+                    selectedBlockIndex = blockList.placeableBlocks.Length - 1;
+                }
+                else
+                {
+                    selectedBlockIndex--;
+                }
+            }
+            blockImage.sprite = blockList.placeableBlocks[selectedBlockIndex].m_DefaultSprite;
+            blockPlacer.currentTile = blockList.placeableBlocks[selectedBlockIndex];
         }
-        blockImage.sprite = blockList.placeableBlocks[selectedBlockIndex].m_DefaultSprite;
-        blockPlacer.currentTile = blockList.placeableBlocks[selectedBlockIndex];
+    }
+
+    private void OnDestory()
+    {
+        placeBlockAction.performed -= PlaceBlock;
+        switchBlockAction.performed -= SwitchBlock;
     }
 }
