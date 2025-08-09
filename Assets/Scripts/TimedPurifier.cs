@@ -45,7 +45,7 @@ public class TimedPurifier : MonoBehaviour, IBlock
         if (timeSinceLastStage >= TIME_TO_ADVANCE_STAGE && currentStage < stages.stages.Length - 1)
         {
             timeSinceLastStage = 0.0f;
-            tilemap.SetTile(location, stages.stages[currentStage + 1]);
+            LevelManager.ReplaceTileAndTransferProperties(location, stages.stages[currentStage + 1]);
         }
     }
 }

@@ -95,18 +95,29 @@ public static class LevelManager
         int purificationPower = 0;
         float timeSincePurificationStart = 0.0f;
         bool purificationStarted = false;
-        if (_tilemap.GetInstantiatedObject(location).TryGetComponent<IPurifiable>(out IPurifiable purifiable))
+        bool placedByPlayer = false;
+        GameObject originalBlock = _tilemap.GetInstantiatedObject(location);
+        if (originalBlock.TryGetComponent<IPurifiable>(out IPurifiable purifiable))
         {
             purificationPower = purifiable.purificationPower;
             timeSincePurificationStart = purifiable.timeSincePurificationStart;
             purificationStarted = purifiable.purificationStarted;
         }
+        if (originalBlock.TryGetComponent<IBlock>(out IBlock block))
+        {
+            placedByPlayer = block.placedByPlayer;
+        }
         _tilemap.SetTile(location, tile);
-        if (_tilemap.GetInstantiatedObject(location).TryGetComponent<IPurifiable>(out IPurifiable purifiableOut))
+        GameObject newBlock = _tilemap.GetInstantiatedObject(location); ;
+        if (newBlock.TryGetComponent<IPurifiable>(out IPurifiable purifiableOut))
         {
             purifiableOut.purificationPower = purificationPower;
             purifiableOut.timeSincePurificationStart = timeSincePurificationStart;
             purifiableOut.purificationStarted = purificationStarted;
+        }
+        if (newBlock.TryGetComponent<IBlock>(out IBlock blockOut))
+        {
+            blockOut.placedByPlayer = placedByPlayer;
         }
     }
 
