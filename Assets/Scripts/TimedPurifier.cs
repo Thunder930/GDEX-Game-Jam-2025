@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class TimedPurifier : MonoBehaviour
+public class TimedPurifier : MonoBehaviour, IBlock
 {
     public int purificationPower;
     private Vector3Int location;
@@ -14,6 +14,8 @@ public class TimedPurifier : MonoBehaviour
     private const float TIME_TO_ADVANCE_STAGE = 3.0f;
     [SerializeField] TimedPurificationStages stages;
     [SerializeField] int currentStage;
+
+    public bool placedByPlayer { get; set; } = false;
 
     private void Start()
     {

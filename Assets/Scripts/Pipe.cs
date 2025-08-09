@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Pipe : MonoBehaviour, ICorruptible, IPurifiable
+public class Pipe : MonoBehaviour, ICorruptible, IPurifiable, IBlock
 {
     [SerializeField] bool topOpening;
     [SerializeField] bool leftOpening;
@@ -15,6 +15,8 @@ public class Pipe : MonoBehaviour, ICorruptible, IPurifiable
     public float timeSincePurificationStart { get; set; }
     public bool purificationStarted { get; set; }
     public int purificationPower { get; set; }
+
+    public bool placedByPlayer { get; set; } = false;
 
     private void Start()
     {

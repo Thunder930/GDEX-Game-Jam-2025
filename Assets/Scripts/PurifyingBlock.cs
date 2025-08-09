@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class PurifyingBlock : MonoBehaviour
+public class PurifyingBlock : MonoBehaviour, IBlock
 {
     public int purificationPower;
     private Vector3Int location;
@@ -10,6 +10,8 @@ public class PurifyingBlock : MonoBehaviour
     private List<Vector3Int> adjacentTileLocations = new List<Vector3Int>();
     private float timeSincePlaced = 0.0f;
     private const float TIME_TO_PASS_ALONG_PURIFICATION = 1.0f;
+
+    public bool placedByPlayer { get; set; } = false;
 
     private void Start()
     {

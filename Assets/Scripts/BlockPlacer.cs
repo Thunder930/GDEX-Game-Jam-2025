@@ -20,7 +20,24 @@ public class BlockPlacer : MonoBehaviour
         Vector3Int location = tilemap.WorldToCell(transform.position);
         if (tilemap.GetTile(location) != null) return false;
         tilemap.SetTile(location, currentTile);
+        if (tilemap.GetInstantiatedObject(location).TryGetComponent<IBlock>(out IBlock block)) {
+            block.placedByPlayer = true;
+        }
         return true;
+    }
+
+    public void RemoveBlock()
+    {
+        Vector3Int location = tilemap.WorldToCell(transform.position);
+        GameObject tile = tilemap.GetInstantiatedObject(location);
+        if (tile != null)
+        {
+            IBlock block = tile.GetComponent<IBlock>();
+            if (block != null && block.placedByPlayer)
+            {
+                tilemap.SetTile(location, null);
+            }
+        }
     }
 
     public void IncrementCounter(int counterIndex)

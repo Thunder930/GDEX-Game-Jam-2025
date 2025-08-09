@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class CorruptingNode : MonoBehaviour, IPurifiable
+public class CorruptingNode : MonoBehaviour, IPurifiable, IBlock
 {
     [SerializeField] TileBase inertNode;
     [SerializeField] int corruptionPower;
@@ -15,6 +15,8 @@ public class CorruptingNode : MonoBehaviour, IPurifiable
     private const float TIME_TO_PASS_ALONG_PURIFICATION = 1.0f;
 
     public int purificationPower { get; set; }
+
+    public bool placedByPlayer { get; set; } = false;
 
     private void Start()
     {

@@ -14,7 +14,7 @@ public class InputManager : MonoBehaviour
     void Start()
     {
         input = new InputSystem_Actions();
-        playerBlockPlacerController = new PlayerBlockPlacerController(input.Player.PlaceBlock, input.Player.SwtichBlock, input.UI.Point, cursor.GetComponent<BlockPlacer>(), placeableBlockList, blockImage, cam);
+        playerBlockPlacerController = new PlayerBlockPlacerController(input.UI.Click, input.UI.RightClick, input.UI.Scroll, input.UI.Point, cursor.GetComponent<BlockPlacer>(), placeableBlockList, blockImage, cam);
         menuController = new MenuController(input.UI.Pause, PauseMenu);
     }
 

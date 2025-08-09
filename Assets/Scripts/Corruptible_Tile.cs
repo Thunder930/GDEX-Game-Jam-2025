@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Corruptible_Tile : MonoBehaviour, ICorruptible, IPurifiable
+public class Corruptible_Tile : MonoBehaviour, ICorruptible, IPurifiable, IBlock
 {
     [SerializeField] CorruptingStages stages;
     [SerializeField] int corruptionPower;
@@ -20,6 +20,9 @@ public class Corruptible_Tile : MonoBehaviour, ICorruptible, IPurifiable
     private int corruptionSpeed = 0;
     public bool purificationStarted { get; set; }
     public float timeSincePurificationStart { get; set; }
+
+    public bool placedByPlayer { get; set; } = false;
+
     private const float TIME_TO_PASS_ALONG_PURIFICATION = 1.0f;
 
     private void Start()

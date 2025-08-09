@@ -9,12 +9,14 @@ public class PlayerBlockPlacerController
     private int selectedBlockIndex;
     private Image blockImage;
     private InputAction placeBlockAction;
+    private InputAction removeBlockAction;
     private InputAction switchBlockAction;
     private InputAction moveMouseAction;
     private Camera camera;
 
-    public PlayerBlockPlacerController(InputAction placeBlockAction, InputAction switchBlockAction, InputAction moveMouseAction, BlockPlacer blockPlacer, PlaceableBlockList blockList, Image blockImage, Camera camera)
+    public PlayerBlockPlacerController(InputAction placeBlockAction, InputAction removeBlockAction, InputAction switchBlockAction, InputAction moveMouseAction, BlockPlacer blockPlacer, PlaceableBlockList blockList, Image blockImage, Camera camera)
     {
+        this.removeBlockAction = removeBlockAction;
         this.placeBlockAction = placeBlockAction;
         this.switchBlockAction = switchBlockAction;
         this.blockPlacer = blockPlacer;
@@ -22,6 +24,8 @@ public class PlayerBlockPlacerController
         this.camera = camera;
         placeBlockAction.performed += PlaceBlock;
         placeBlockAction.Enable();
+        removeBlockAction.performed += RemoveBlock;
+        removeBlockAction.Enable();
         switchBlockAction.performed += SwitchBlock;
         switchBlockAction.Enable();
         moveMouseAction.performed += MoveMouse;
@@ -41,6 +45,14 @@ public class PlayerBlockPlacerController
             {
                 blockPlacer.IncrementCounter(selectedBlockIndex);
             }
+        }
+    }
+
+    private void RemoveBlock(InputAction.CallbackContext context)
+    {
+        if (GameState._state == GAME_STATE.RUNNING)
+        {
+            blockPlacer.RemoveBlock();
         }
     }
 
@@ -81,6 +93,7 @@ public class PlayerBlockPlacerController
     public void OnDestroy()
     {
         placeBlockAction.performed -= PlaceBlock;
+        removeBlockAction.performed -= RemoveBlock;
         switchBlockAction.performed -= SwitchBlock;
         moveMouseAction.performed -= MoveMouse;
     }
