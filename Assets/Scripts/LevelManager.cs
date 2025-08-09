@@ -34,13 +34,11 @@ public static class LevelManager
     public static void LoadNextLevel()
     {
         currentLevelIndex++;
-        GameState.ChangeState(GAME_STATE.RUNNING);
         SceneManager.LoadScene(levels[currentLevelIndex]);
     }
 
     public static void ReloadLevel()
     {
-        GameState.ChangeState(GAME_STATE.RUNNING);
         SceneManager.LoadScene(levels[currentLevelIndex]);
     }
 

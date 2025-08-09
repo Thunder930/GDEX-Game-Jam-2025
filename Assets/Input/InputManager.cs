@@ -25,7 +25,6 @@ public class InputManager : MonoBehaviour
 
     public void ReturnToMainMenu()
     {
-        GameState.ChangeState(GAME_STATE.RUNNING);
         SceneManager.LoadScene("MainMenu");
     }
 
