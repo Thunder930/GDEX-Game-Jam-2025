@@ -30,5 +30,5 @@ This game revolves around placing purification blocks to fight back a spreading 
 - Level 5 actually can become impossible to solve if you aren’t fast enough. If you reach that point, you can always pull up the pause menu by pressing ‘Tab’ and hit ‘Restart’ to reset the level.
 
 # Tools Used
-Game Engine - Unity
-Sprites - Paint.net
+- Game Engine: Unity
+- Sprites: Paint.net
