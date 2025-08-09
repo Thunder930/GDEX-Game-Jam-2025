@@ -15,16 +15,22 @@ public class BlockPlacer : MonoBehaviour
         counts = new int[counters.Length];
     }
 
-    public void PlaceBlock()
+    public bool PlaceBlock()
     {
         Vector3Int location = tilemap.WorldToCell(transform.position);
-        GetComponent<Rigidbody2D>().linearVelocityY += 10.0f;
+        if (tilemap.GetTile(location) != null) return false;
         tilemap.SetTile(location, currentTile);
+        return true;
     }
 
     public void IncrementCounter(int counterIndex)
     {
         counts[counterIndex]++;
         counters[counterIndex].text = "x " + counts[counterIndex];
+    }
+
+    public void Move(Vector3 position)
+    {
+        transform.position = position;
     }
 }

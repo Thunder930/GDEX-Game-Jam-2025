@@ -4,17 +4,17 @@ using UnityEngine.UI;
 public class InputManager : MonoBehaviour
 {
     [SerializeField] Image blockImage;
-    [SerializeField] GameObject player;
+    [SerializeField] GameObject cursor;
     [SerializeField] PlaceableBlockList placeableBlockList;
     [SerializeField] Canvas PauseMenu;
+    [SerializeField] Camera cam;
     private MenuController menuController;
     private InputSystem_Actions input;
+    private PlayerBlockPlacerController playerBlockPlacerController;
     void Start()
     {
         input = new InputSystem_Actions();
-        PlayerMover playerMover = player.GetComponent<PlayerMover>();
-        new PlayerMovementController(input.Player.Move, input.Player.Jump, playerMover);
-        new PlayerBlockPlacerController(input.Player.PlaceBlock, input.Player.SwtichBlock, player.GetComponent<BlockPlacer>(), placeableBlockList, blockImage);
+        playerBlockPlacerController = new PlayerBlockPlacerController(input.Player.PlaceBlock, input.Player.SwtichBlock, input.UI.Point, cursor.GetComponent<BlockPlacer>(), placeableBlockList, blockImage, cam);
         menuController = new MenuController(input.UI.Pause, PauseMenu);
     }
 
@@ -42,6 +42,7 @@ public class InputManager : MonoBehaviour
     private void OnDestroy()
     {
         menuController.OnDestroy();
+        playerBlockPlacerController.OnDestroy();
         input.Disable();
         input.Dispose();
     }

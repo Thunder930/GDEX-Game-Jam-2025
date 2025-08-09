@@ -10,16 +10,23 @@ public class PlayerBlockPlacerController
     private Image blockImage;
     private InputAction placeBlockAction;
     private InputAction switchBlockAction;
+    private InputAction moveMouseAction;
+    private Camera camera;
 
-    public PlayerBlockPlacerController(InputAction placeBlockAction, InputAction switchBlockAction, BlockPlacer blockPlacer, PlaceableBlockList blockList, Image blockImage)
+    public PlayerBlockPlacerController(InputAction placeBlockAction, InputAction switchBlockAction, InputAction moveMouseAction, BlockPlacer blockPlacer, PlaceableBlockList blockList, Image blockImage, Camera camera)
     {
         this.placeBlockAction = placeBlockAction;
         this.switchBlockAction = switchBlockAction;
         this.blockPlacer = blockPlacer;
+        this.moveMouseAction = moveMouseAction;
+        this.camera = camera;
         placeBlockAction.performed += PlaceBlock;
         placeBlockAction.Enable();
         switchBlockAction.performed += SwitchBlock;
         switchBlockAction.Enable();
+        moveMouseAction.performed += MoveMouse;
+        moveMouseAction.Enable();
+
         this.blockList = blockList;
         this.blockImage = blockImage;
         blockImage.sprite = blockList.placeableBlocks[selectedBlockIndex].m_DefaultSprite;
@@ -30,8 +37,10 @@ public class PlayerBlockPlacerController
     {
         if (GameState._state == GAME_STATE.RUNNING)
         {
-            blockPlacer.PlaceBlock();
-            blockPlacer.IncrementCounter(selectedBlockIndex);
+            if (blockPlacer.PlaceBlock())
+            {
+                blockPlacer.IncrementCounter(selectedBlockIndex);
+            }
         }
     }
 
@@ -60,9 +69,19 @@ public class PlayerBlockPlacerController
         }
     }
 
-    private void OnDestory()
+    private void MoveMouse(InputAction.CallbackContext context)
+    {
+        if (GameState._state == GAME_STATE.RUNNING)
+        {
+            Vector2 location = camera.ScreenToWorldPoint(context.ReadValue<Vector2>());
+            blockPlacer.Move(location);
+        }
+    }
+
+    public void OnDestroy()
     {
         placeBlockAction.performed -= PlaceBlock;
         switchBlockAction.performed -= SwitchBlock;
+        moveMouseAction.performed -= MoveMouse;
     }
 }
