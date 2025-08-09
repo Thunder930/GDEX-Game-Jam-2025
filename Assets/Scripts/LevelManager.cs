@@ -69,7 +69,8 @@ public static class LevelManager
                 if (corruptible.IsCorrupted())
                 {
                     allBlocksPurified = false;
-                } else
+                } 
+                if (!corruptible.IsFullyCorrupted())
                 {
                     allBlocksCorrupted = false;
                 }
